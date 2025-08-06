@@ -1412,6 +1412,7 @@ namespace oomph
   ///   0 : ux
   ///   1 : uy
   ///   2 : w
+  ///   3 : pressure // miraqui
   ///
   /// nplot points in each coordinate direction
   //======================================================================
@@ -1451,9 +1452,22 @@ namespace oomph
       {
         outfile << *it << " ";
       }
-
+      
+      // Output pressure     
+      //Vector<double> pressure(0.0);
+      double pressure(0.0);
+      //oomph_info << "This is pressure fct pt " << Pressure_fct_pt << std::endl;
+      if (Pressure_fct_pt != 0)
+      {
+       (*Pressure_fct_pt)(x,pressure);
+      }
+      //get_pressure_for_output(x,pressure);
+      outfile << pressure << " "; //miraqui - pressure
+      
+      
       // End plot point line
       outfile << "\n";
+      
 
     }
 
@@ -1470,6 +1484,7 @@ namespace oomph
   ///   0: u_x
   ///   1: u_y
   ///   2: w
+  ///   3: pressure // miraqui
   ///
   /// nplot points in each coordinate direction
   //======================================================================
@@ -1506,6 +1521,13 @@ namespace oomph
       {
         fprintf(file_pt, "%g \n", interpolated_vals[i]);
       }
+      
+////      // Output pressure
+      double pressure(0.0); 
+      (*Pressure_fct_pt)(x,pressure);
+      //get_pressure_for_output(x,pressure);
+      fprintf(file_pt, "%g ", pressure); // miraqui
+      
     }
 
     // Write tecplot footer (e.g. FE connectivity lists)

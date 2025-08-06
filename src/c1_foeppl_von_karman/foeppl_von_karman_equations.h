@@ -405,12 +405,38 @@ namespace oomph
       double s00 = sigma(0, 0);
       double s01 = sigma(0, 1);
       double s11 = sigma(1, 1);
+     
 
       // Calculate the principal stress magnitudes
-      eigenvals[0] = 0.5 * ((s00 + s11) + sqrt((s00 + s11) * (s00 + s11) -
+      
+      // miraqui --- edit for debugging -----------------------------------------------------------------
+      double some_number = (s00 + s11) * (s00 + s11) - 4.0 * (s00 * s11 - s01 * s01); // miraqui < 0 ??
+      
+      //std::cout << "blabla =" << some_number << std::endl;
+      
+      if (some_number < 0 && fabs(some_number) < 1e-16)
+      {
+       eigenvals[0] = 0.5 * (s00 + s11);
+       eigenvals[1] = 0.5 * (s00 + s11);
+      
+      }
+      else
+      {
+       eigenvals[0] = 0.5 * ((s00 + s11) + sqrt((s00 + s11) * (s00 + s11) -
                                                4.0 * (s00 * s11 - s01 * s01)));
-      eigenvals[1] = 0.5 * ((s00 + s11) - sqrt((s00 + s11) * (s00 + s11) -
+       eigenvals[1] = 0.5 * ((s00 + s11) - sqrt((s00 + s11) * (s00 + s11) -
                                                4.0 * (s00 * s11 - s01 * s01)));
+      }
+      
+      // miraqui --- end of edition ------------------------------------------------------------------------
+      
+      // ------------ Original lines -----------------------------------------------------------------------
+      //  eigenvals[0] = 0.5 * ((s00 + s11) + sqrt((s00 + s11) * (s00 + s11) -
+      //                                           4.0 * (s00 * s11 - s01 * s01)));
+      // eigenvals[1] = 0.5 * ((s00 + s11) - sqrt((s00 + s11) * (s00 + s11) -
+      //                                           4.0 * (s00 * s11 - s01 * s01)));
+      // ---------- ............... ------------------------------------------------------------------------
+
 
       // Handle the shear free case
       if (s01 == 0.0)
@@ -544,6 +570,14 @@ namespace oomph
 	(*Pressure_fct_pt)(x, pressure);
       }
     }
+    
+    // miraqui - defining pressure for output purposes
+    //inline virtual void get_pressure_for_output(const Vector<double>& x, double& pressure) const
+    //{
+    	// Get pressure strength
+    //	(*Pressure_fct_pt)(x, pressure);
+    //}
+      
 
     /// Get pressure term at (Eulerian) position x. This function is
     /// virtual to allow overloading in multi-physics problems where

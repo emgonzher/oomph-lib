@@ -1444,9 +1444,9 @@ namespace oomph
        {
         if (nod_pt->is_on_boundary(b))
          {
-#ifdef PARANOID
           // We should only have one coordinate on this boundary
           unsigned nzeta=nod_pt->ncoordinates_on_boundary(b);
+#ifdef PARANOID
           if (nzeta!=1)
            {
             std::stringstream error_message;
@@ -1591,9 +1591,9 @@ namespace oomph
        {
         if (nod_pt->is_on_boundary(b))
          {
-#ifdef PARANOID
           // We should only have one coordinate on this boundary
           unsigned nzeta=nod_pt->ncoordinates_on_boundary(b);
+#ifdef PARANOID
           if (nzeta!=1)
            {
             std::stringstream error_message;
